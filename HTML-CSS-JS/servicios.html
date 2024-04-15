@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Taller Mecánico Rayo McWeen</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Kdam+Thmor+Pro&display=swap')
+  </style>
+  <style>
+    body {
+      overflow-y: scroll;
+      overflow-x: hidden;
+    }
+  </style>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<div class="container-fluid">
+  <button type="button" style="background-color: #B04B4B;" onclick="window.location.href='index.html'">
+    <img src="imagenes/images.png" width="150px">
+  </button>
+  <div class="text-container">
+    <div>Taller Mecánico <br>
+      <span style="font-weight: bold;">"Rayo McWeen"</span>
+    </div>
+  </div>
+</div>
+
+<body>
+  <div class="container">
+    <div class="row">
+      <div class="col-sm">
+        <div class="card" style="width: 18rem; margin: 40px;">
+          <img class="card-img-top" src="imagenes/cajascambio.jpg" alt="Card image cap">
+          <div class="card-body" style="background-color: indianred; color: white;">
+            <h5 class="card-title">Mantenimiento de caja de cambios</h5>
+            <p class="card-text">Arreglamos todo tipo de cajas de cambio, automaticas y mecanicas,cambio de aceite,
+              ajuste de embrague, fugas
+              de aceite y más</p>
+            <a href="#" class="btn btn-primary sumar" style="background-color: #B04B4B; border-color: #B04B4B;" data-valor=400000>Añadir al
+              carrito</a>
+            <span>Desde 400000</span>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm">
+        <div class="card" style="width: 18rem; margin: 40px;">
+          <img class="card-img-top" src="imagenes/elec.automotriz.jpg" alt="Card image cap">
+          <div class="card-body" style="background-color: indianred; color: white;">
+            <h5 class="card-title">Mantenimiento del sistema eléctrico</h5>
+            <p class="card-text">Cualquier tipo de problema que pueda tener el sistema electrico de tu auto, lo
+              arreglaremos con nuestro especialista en electricidad automotriz.</p>
+            <a href="#" class="btn btn-primary sumar" style="background-color: #B04B4B; border-color: #B04B4B;" data-valor=350000>Añadir al carrito</a>
+            <span>Desde 350000</span>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm">
+        <div class="card" style="width: 18rem; margin: 40px;">
+          <img class="card-img-top" src="imagenes/susp.direccion.jpg" alt="Card image cap">
+          <div class="card-body" style="background-color: indianred; color: white;">
+            <h5 class="card-title">Mantenimiento del sistema de suspensión y dirección</h5>
+            <p class="card-text">Arreglaremos cualquier daño a los frenos, reemplazaremos amortiguadores, desgaste de la
+              suspension, etc. </p>
+            <a href="#" class="btn btn-primary sumar" style="background-color: #B04B4B; border-color: #B04B4B;" data-valor=600000 ">Añadir al
+              carrito</a>
+            <span>Desde 600000</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="carrito">
+    <h2>Servicios solicitados</h2>
+    <div id="totalContainer" style="display: flex; justify-content: space-between; align-items: center;">
+      <span id="total" style="font-size: 25px; font-weight: bold; color: white;">Total minimo: $</span>
+      <a href="#" class="btn btn-primary" id="myButton" style="background-color: indianred; border-color: indianred;" disabled>Crear solicitud</a>
+    </div>
+  </div>
+  <div class="producto" style="display: flex; flex-direction: row; flex-wrap: wrap; position: relative;">
+      </div>
+    </div>
+  </div>
+  </div>
+  </div>
+  </div>
+
+  <script>
+    $(document).ready(function () {
+      var total = 0;
+      var cart = [];
+
+      $(".sumar").click(function () {
+        var valor = parseInt($(this).data("valor"));
+        var title = $(this).siblings(".card-title").text();
+        var price = $(this).siblings("span").text();
+        total += valor;
+        $("#total").text("Total minimo: $" + total);
+        var newCard = `<div class="card" style="width: 18rem; margin: 40px;">
+          <div class="card-body" style="background-color: indianred; color: white;">
+            <h5 class="card-title">${title}</h5>
+            <p class="card-text">${price}</p>
+          </div>
+        </div>`;
+        $(".producto").append(newCard);
+
+        cart.push({
+          title: title,
+          price: price,
+          valor: valor
+        });
+
+        updateButtonStatus(); 
+      });
+
+      function updateButtonStatus() {
+        if (cart.length > 0) {
+          $("#myButton").prop("disabled", false).css("opacity", 1);
+        } else {
+          $("#myButton").prop("disabled", true).css("opacity", 0.5);
+        }
+      }
+
+      function mostrarNotificacion() {
+        if (!("Notification" in window)) {
+          alert("Este navegador no soporta notificaciones de escritorio");
+        } else if (Notification.permission === "granted") {
+          new Notification("Solicitud creada", { body: "Por favor, contactar a WhatsApp" });
+        } else if (Notification.permission !== "denied") {
+          Notification.requestPermission().then(function (permission) {
+            if (permission === "granted") {
+              new Notification("Solicitud creada", { body: "Por favor, contactar a WhatsApp" });
+            }
+          });
+        }
+      }
+
+      $("#myButton").click(function () {
+        mostrarNotificacion();
+      });
+
+      updateButtonStatus();
+    });
+  </script>
+</body>
+</html>
